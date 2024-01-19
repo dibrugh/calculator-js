@@ -31,6 +31,7 @@ Documentation:
 
 ## Folder structure
 + PROJECT
+  + /.husky (git hooks such as pre-commit hook)
   + /dist (production build of the project)
   + /node_modules (dependencies)
   + /src (development version of the project)

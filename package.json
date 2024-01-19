@@ -40,11 +40,6 @@
         "precommit": "lint-staged",
         "clear": "rd /s /q dist"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
     "lint-staged": {
         "*.{js,jsx}": [
             "prettier --write",
