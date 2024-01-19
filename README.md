@@ -1,7 +1,7 @@
 Documentation:
 
 # Project -  Simple Calculator🖩 
-## Task - Create Simple Calculator using pure JavaScript. 
+## [Task](./Test-task.pdf) - Create Simple Calculator using pure JavaScript. 
 ## Functional requirements:
 - [x] Implement division, multiplication, subtraction, addition, percentage, sign change
 - [x] Project must be done using only pure JS (usage of libraries/frameworks is forbidden)
@@ -13,7 +13,6 @@ Documentation:
 ### [Design draft link](https://www.figma.com/community/file/1114581199758334463/calculator)
 ### [Project (deployed)](https://dibrugh.github.io/calculator-js/)
 ### [Repository](https://github.com/dibrugh/calculator-js)
-
 
 # Available Scripts and Commands
 
@@ -27,7 +26,6 @@ Documentation:
 >```npm run build-dev```  # builds the app for production\
 >```npm run build-prod```  # storybook build\
 >```npm run build-gh-pages```  # deploy on Github Pages
-
 
 ## Folder structure
 + PROJECT

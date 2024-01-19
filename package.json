@@ -37,7 +37,6 @@
         "build-prod": "webpack --node-env=production",
         "build-gh-pages": "gh-pages -d dist",
         "prepare": "husky install",
-        "precommit": "lint-staged",
         "clear": "rd /s /q dist"
     },
     "lint-staged": {
