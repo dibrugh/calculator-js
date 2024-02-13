@@ -25,6 +25,35 @@ export class Operations extends Command {
     }
 
     // Унарные операции
+    changeSign(firstOperand) {
+        return firstOperand * -1;
+    }
+    getPercent(firstOperand) {
+        return firstOperand * 0.01;
+    }
+    square(firstOperand) {
+        return firstOperand ** 2;
+    }
+    qube(firstOperand) {
+        return firstOperand ** 3;
+    }
+    tenToThePowerOfX(firstOperand) {
+        return 10 ** firstOperand;
+    }
+    oneDivideByX(firstOperand) {
+        return 1 / firstOperand;
+    }
+    squareRoot(firstOperand) {
+        return Math.sqrt(firstOperand);
+    }
+    cubeRoot(firstOperand) {
+        return Math.cbrt(firstOperand);
+    }
+    factorial(firstOperand) {
+        return firstOperand != 1
+            ? firstOperand * this.factorial(firstOperand - 1)
+            : 1;
+    }
 
     execute(operationName, ...operands) {
         if (operands.length === 1) {

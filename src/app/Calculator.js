@@ -1,25 +1,32 @@
 import { Operations } from "./Operations";
 import { result } from "./View";
 const operationsHandler = new Operations();
-
-/* Calculator LOGIC */
 class Calculator {
     constructor(currentOperand) {
         this.currentOperand = currentOperand;
         this.previousOperand = "";
         this.operationName = undefined;
-        /* this.calculation = 0; */
+        this.operationType = undefined;
     }
 
     appendNumber(number) {
-        if (number === "," && this.currentOperand.includes(",")) {
+        // Меняю запятую на точку чтобы получать дроби
+        if (number === ",") {
+            number = ".";
+        }
+        // Если нажимается только точка, ноль не стирается
+        if (result.innerText === "0" && number === ".") {
+            this.currentOperand = "0.";
+        }
+        // Избегаю дублей точек
+        if (number === "." && this.currentOperand.includes(".")) {
             return;
         }
+        // Избегаем дублей 0
         if (result.innerText === "0") {
-            this.currentOperand = number.toString();
+            this.currentOperand = number;
         } else {
-            this.currentOperand =
-                this.currentOperand.toString() + number.toString();
+            this.currentOperand += number;
         }
     }
 
@@ -30,27 +37,35 @@ class Calculator {
         const operationName = operationButton.attributes["data-function"].value;
         const operationType = operationButton.attributes["data-type"].value;
 
-        // Если есть первый операнд и операции унарная || есть два операнца и операция бинарная
-        if (this.currentOperand !== "" && operationType === "operation-unary") {
-            this.compute(operationType);
-        } else if (
-            this.previousOperand !== "" &&
-            operationType === "operation-binary"
-        ) {
-            this.compute(operationType);
+        // Если есть первый операнд и операции унарная
+        if (operationType === "operation-unary") {
+            this.operationName = operationName;
+            this.operationType = operationType;
+            this.compute();
         }
-        this.operationName = operationName;
-        this.previousOperand = this.currentOperand;
-        this.currentOperand = "";
+        // Если есть два операнца и операция бинарная
+        if (
+            operationType === "operation-binary" &&
+            this.currentOperand !== "0"
+        ) {
+            if (this.previousOperand !== "") {
+                this.compute();
+            }
+            this.operationName = operationName;
+            this.operationType = operationType;
+            this.previousOperand = this.currentOperand;
+            this.currentOperand = "";
+        }
+        this.updateDisplay();
     }
 
-    compute(operationType) {
-        let computation;
+    compute() {
         const previousNumber = parseFloat(this.previousOperand);
         const currentNumber = parseFloat(this.currentOperand);
+
         // Если есть первый оператор и это унарная операция
-        if (operationType === "operation-unary") {
-            computation = operationsHandler.execute(
+        if (this.operationType === "operation-unary") {
+            this.currentOperand = operationsHandler.execute(
                 this.operationName,
                 currentNumber
             );
@@ -58,14 +73,14 @@ class Calculator {
         // Если нет первого или второго и это бинарная операция, выходим
         if (isNaN(previousNumber) || isNaN(currentNumber)) return;
 
-        computation = operationsHandler.execute(
-            this.operationName,
-            previousNumber,
-            currentNumber
-        );
-
+        if (this.operationType === "operation-binary") {
+            this.currentOperand = operationsHandler.execute(
+                this.operationName,
+                previousNumber,
+                currentNumber
+            );
+        }
         // Обновляем данные
-        this.currentOperand = computation;
         this.operation = undefined;
         this.previousOperand = "";
     }

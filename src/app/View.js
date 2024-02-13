@@ -34,7 +34,7 @@ class View {
         });
 
         // Change input/output styles depending on character length
-        document.querySelectorAll("button").forEach((button) => {
+        /* document.querySelectorAll("button").forEach((button) => {
             const handleClasses = () => {
                 if (
                     result.innerText.length > 3 &&
@@ -47,7 +47,7 @@ class View {
             };
             button.addEventListener("click", handleClasses);
             document.addEventListener("keydown", handleClasses);
-        });
+        }); */
 
         return {
             result,
