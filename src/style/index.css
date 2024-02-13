@@ -158,7 +158,7 @@ button:focus {
     grid-area: 5/7/6/9;
 }
 
-[data-number] {
+[data-type="number"] {
     background-color: var(--color-number);
 }
 

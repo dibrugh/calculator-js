@@ -1,6 +1,8 @@
 // styles
 import "./style/normalize.css";
 import "./style/index.css";
+
+import { calculator } from "./app/Calculator";
 // render calculator
-import { handleCalculatorLogic } from "./app/calculatorLogic";
-handleCalculatorLogic();
+// Set input/outout to 0
+calculator.updateDisplay();
