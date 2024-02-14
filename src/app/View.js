@@ -11,7 +11,6 @@ class View {
         document.getElementById("root").appendChild(calculatorView);
 
         const result = document.createElement("div");
-        result.innerText = 0;
         result.classList.add("calculator__output");
         calculatorView.appendChild(result);
 

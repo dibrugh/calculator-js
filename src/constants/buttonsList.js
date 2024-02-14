@@ -61,7 +61,7 @@ export const buttonsList = [
     { value: ",", attribute: ["number", "."] },
     {
         value: "=",
-        attribute: ["test", "equal"],
+        attribute: ["operation-unary", "equal"],
         class: "orange",
     },
 ];

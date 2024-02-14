@@ -2,11 +2,13 @@ import { Operations } from "./Operations";
 import { result } from "./View";
 const operationsHandler = new Operations();
 class Calculator {
-    constructor(currentOperand) {
-        this.currentOperand = currentOperand;
-        this.previousOperand = "";
+    constructor() {
+        this.displayValue = "0";
+        this.firstOperand = null;
+        this.waitingForSecondOperand = false;
         this.operationName = undefined;
         this.operationType = undefined;
+        this.result = "";
     }
 
     appendNumber(number) {
@@ -14,36 +16,69 @@ class Calculator {
         if (number === ",") {
             number = ".";
         }
-        // Если нажимается только точка, ноль не стирается
-        if (result.innerText === "0" && number === ".") {
+        if (number === "." && this.displayValue === "0") {
+            this.displayValue = "0.";
+            this.waitingForSecondOperand = false;
+            return;
+        }
+        if (number === "." && this.displayValue.includes(".")) {
+            return;
+        }
+
+        /*         // Если нажимается только точка, ноль не стирается
+        if (this.currentOperand === "0" && number === ".") {
             this.currentOperand = "0.";
         }
         // Избегаю дублей точек
         if (number === "." && this.currentOperand.includes(".")) {
             return;
-        }
-        // Избегаем дублей 0
-        if (result.innerText === "0") {
-            this.currentOperand = number;
+        } */
+
+        if (this.waitingForSecondOperand === true) {
+            this.displayValue = number;
+            this.waitingForSecondOperand = false;
         } else {
-            this.currentOperand += number;
+            // Избегаем дублей 0
+            this.displayValue =
+                this.displayValue === "0" ? number : this.displayValue + number;
         }
     }
 
     chooseOperation(operationButton) {
-        // Если нет операндов, ничего не делаем
-        if (this.currentOperand === "") return;
-
+        const inputValue = parseFloat(this.displayValue);
         const operationName = operationButton.attributes["data-function"].value;
-        const operationType = operationButton.attributes["data-type"].value;
 
-        // Если есть первый операнд и операции унарная
+        // Если нет операндов, ничего не делаем
+        if (this.displayValue === "") return;
+        /* const operationType = operationButton.attributes["data-type"].value; */
+
+        // Если оператор =, не передаём в execute
+        if (operationName !== "equal" && this.waitingForSecondOperand) {
+            this.operationName = operationName;
+            return;
+        }
+
+        if (this.firstOperand === null && !isNaN(inputValue)) {
+            this.firstOperand = inputValue;
+        } else if (operationName) {
+            this.result = operationsHandler.execute(
+                this.operationName,
+                this.firstOperand,
+                inputValue
+            );
+            this.displayValue = `${String(this.result).length < 18 ? this.result : "Error: wrong length"}`;
+            this.firstOperand = this.result;
+        }
+        this.waitingForSecondOperand = true;
+        this.operationName = operationName;
+
+        /* // Если есть первый операнд и операции унарная
         if (operationType === "operation-unary") {
             this.operationName = operationName;
             this.operationType = operationType;
             this.compute();
         }
-        // Если есть два операнца и операция бинарная
+        // Если есть два операнда и операция бинарная
         if (
             operationType === "operation-binary" &&
             this.currentOperand !== "0"
@@ -54,9 +89,9 @@ class Calculator {
             this.operationName = operationName;
             this.operationType = operationType;
             this.previousOperand = this.currentOperand;
-            this.currentOperand = "";
+            this.currentOperand = "0";
         }
-        this.updateDisplay();
+        this.updateDisplay(); */
     }
 
     compute() {
@@ -86,17 +121,19 @@ class Calculator {
     }
 
     updateDisplay() {
-        result.innerText = this.currentOperand;
+        result.innerText = this.displayValue;
     }
 
     allClear() {
-        this.previousOperand = "";
-        this.currentOperand = "0";
-        this.operation = undefined;
+        this.displayValue = "0";
+        this.firstOperand = null;
+        this.waitingForSecondOperand = false;
+        this.operationName = undefined;
+        result.textContent = this.displayValue;
     }
 }
 
-export const calculator = new Calculator(result.innerText);
+export const calculator = new Calculator();
 
 const numberButtons = document.querySelectorAll("[data-type=number]");
 numberButtons.forEach((button) =>
@@ -113,12 +150,6 @@ operationButtons.forEach((button) =>
         calculator.updateDisplay();
     })
 );
-
-const equalButton = document.querySelector("[data-function=equal]");
-equalButton.addEventListener("click", () => {
-    calculator.compute();
-    calculator.updateDisplay();
-});
 
 document
     .querySelector("[data-function=allClear]")
