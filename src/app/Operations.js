@@ -6,6 +6,9 @@ export class Operations extends Command {
     }
     // Бинарные операции
     divide(firstOperand, secondOperand) {
+        if (secondOperand === 0) {
+            throw new Error("Ошибка");
+        }
         return parseFloat((firstOperand / secondOperand).toFixed(5));
     }
     xToThePowerOfY(firstOperand, secondOperand) {
@@ -15,13 +18,16 @@ export class Operations extends Command {
         return parseFloat((firstOperand * secondOperand).toFixed(5));
     }
     yRootOfX(firstOperand, secondOperand) {
+        if (secondOperand === 0) {
+            throw new Error("Ошибка");
+        }
         return parseFloat(Math.pow(firstOperand, 1 / secondOperand).toFixed(5));
     }
     addition(firstOperand, secondOperand) {
-        return parseFloat(firstOperand + secondOperand).toFixed(5);
+        return parseFloat((firstOperand + secondOperand).toFixed(5));
     }
     substraction(firstOperand, secondOperand) {
-        return parseFloat(firstOperand - secondOperand).toFixed(5);
+        return parseFloat((firstOperand - secondOperand).toFixed(5));
     }
 
     // Унарные операции
@@ -56,13 +62,17 @@ export class Operations extends Command {
     }
 
     execute(operationName, ...operands) {
-        if (operands.length === 1) {
-            return this[operationName](parseFloat(operands[0]));
-        } else {
-            return this[operationName](
-                parseFloat(operands[0]),
-                parseFloat(operands[1])
-            );
+        try {
+            if (operands.length === 1) {
+                return this[operationName](parseFloat(operands[0]));
+            } else {
+                return this[operationName](
+                    parseFloat(operands[0]),
+                    parseFloat(operands[1])
+                );
+            }
+        } catch (error) {
+            return "Ошибка";
         }
     }
 }

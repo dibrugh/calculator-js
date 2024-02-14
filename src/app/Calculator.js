@@ -1,14 +1,16 @@
+import { MemoryOperations } from "./MemoryOperations";
 import { Operations } from "./Operations";
 import { result } from "./View";
 const operationsHandler = new Operations();
+const memoryOperationsHandler = new MemoryOperations(0);
 class Calculator {
     constructor() {
         this.displayValue = "0";
         this.firstOperand = null;
         this.waitingForSecondOperand = false;
         this.operationName = undefined;
-        this.operationType = undefined;
         this.result = "";
+        this.memoryValue = null;
     }
 
     appendNumber(number) {
@@ -35,8 +37,37 @@ class Calculator {
         }
     }
 
+    handleMemoryOperations(operationButton) {
+        const inputValue = parseFloat(this.displayValue);
+        const operationName = operationButton.attributes["data-function"].value;
+        let memoryResult;
+        // Если нет операндов, ничего не делаем
+        if (this.displayValue === "") return;
+        switch (operationName) {
+            case "memoryRestore":
+                memoryResult = memoryOperationsHandler.memoryRestore();
+                break;
+            case "memoryClear":
+                memoryOperationsHandler.memoryClear();
+                break;
+            case "memoryAddition":
+                memoryOperationsHandler.memoryAddition(inputValue);
+                break;
+            case "memorySubstraction":
+                memoryOperationsHandler.memorySubstraction(inputValue);
+                break;
+            default:
+                return;
+        }
+        if (memoryResult) {
+            this.displayValue = memoryResult;
+            this.firstOperand = this.displayValue;
+        }
+    }
+
     handleBinaryOperations(operationButton) {
         const inputValue = parseFloat(this.displayValue);
+        console.log("значение inputValue для бинарных операций", inputValue);
         const operationName = operationButton.attributes["data-function"].value;
 
         // Если нет операндов, ничего не делаем
@@ -117,6 +148,16 @@ const unaryOperationButtons = document.querySelectorAll(
 unaryOperationButtons.forEach((button) =>
     button.addEventListener("click", () => {
         calculator.handleUnaryOperations(button);
+        calculator.updateDisplay();
+    })
+);
+
+const memoryOperationButtons = document.querySelectorAll(
+    "[data-type=operation-memory]"
+);
+memoryOperationButtons.forEach((button) =>
+    button.addEventListener("click", () => {
+        calculator.handleMemoryOperations(button);
         calculator.updateDisplay();
     })
 );
