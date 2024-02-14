@@ -25,15 +25,6 @@ class Calculator {
             return;
         }
 
-        /*         // Если нажимается только точка, ноль не стирается
-        if (this.currentOperand === "0" && number === ".") {
-            this.currentOperand = "0.";
-        }
-        // Избегаю дублей точек
-        if (number === "." && this.currentOperand.includes(".")) {
-            return;
-        } */
-
         if (this.waitingForSecondOperand === true) {
             this.displayValue = number;
             this.waitingForSecondOperand = false;
@@ -44,13 +35,12 @@ class Calculator {
         }
     }
 
-    chooseOperation(operationButton) {
+    handleBinaryOperations(operationButton) {
         const inputValue = parseFloat(this.displayValue);
         const operationName = operationButton.attributes["data-function"].value;
 
         // Если нет операндов, ничего не делаем
         if (this.displayValue === "") return;
-        /* const operationType = operationButton.attributes["data-type"].value; */
 
         // Если оператор =, не передаём в execute
         if (operationName !== "equal" && this.waitingForSecondOperand) {
@@ -71,53 +61,21 @@ class Calculator {
         }
         this.waitingForSecondOperand = true;
         this.operationName = operationName;
-
-        /* // Если есть первый операнд и операции унарная
-        if (operationType === "operation-unary") {
-            this.operationName = operationName;
-            this.operationType = operationType;
-            this.compute();
-        }
-        // Если есть два операнда и операция бинарная
-        if (
-            operationType === "operation-binary" &&
-            this.currentOperand !== "0"
-        ) {
-            if (this.previousOperand !== "") {
-                this.compute();
-            }
-            this.operationName = operationName;
-            this.operationType = operationType;
-            this.previousOperand = this.currentOperand;
-            this.currentOperand = "0";
-        }
-        this.updateDisplay(); */
     }
 
-    compute() {
-        const previousNumber = parseFloat(this.previousOperand);
-        const currentNumber = parseFloat(this.currentOperand);
+    handleUnaryOperations(operationButton) {
+        // Если нет операндов, ничего не делаем
+        if (this.displayValue === "") return;
 
-        // Если есть первый оператор и это унарная операция
-        if (this.operationType === "operation-unary") {
-            this.currentOperand = operationsHandler.execute(
-                this.operationName,
-                currentNumber
-            );
-        }
-        // Если нет первого или второго и это бинарная операция, выходим
-        if (isNaN(previousNumber) || isNaN(currentNumber)) return;
+        const inputValue = parseFloat(this.displayValue);
+        const operationName = operationButton.attributes["data-function"].value;
 
-        if (this.operationType === "operation-binary") {
-            this.currentOperand = operationsHandler.execute(
-                this.operationName,
-                previousNumber,
-                currentNumber
-            );
+        if (operationName) {
+            this.result = operationsHandler.execute(operationName, inputValue);
+            this.displayValue = `${String(this.result).length < 18 ? this.result : "Error: wrong length"}`;
+            this.firstOperand = this.result;
         }
-        // Обновляем данные
-        this.operation = undefined;
-        this.previousOperand = "";
+        this.waitingForSecondOperand = true;
     }
 
     updateDisplay() {
@@ -143,10 +101,22 @@ numberButtons.forEach((button) =>
     })
 );
 
-const operationButtons = document.querySelectorAll("[data-type|=operation]");
-operationButtons.forEach((button) =>
+const binaryOperationButtons = document.querySelectorAll(
+    "[data-type=operation-binary]"
+);
+binaryOperationButtons.forEach((button) =>
     button.addEventListener("click", () => {
-        calculator.chooseOperation(button);
+        calculator.handleBinaryOperations(button);
+        calculator.updateDisplay();
+    })
+);
+
+const unaryOperationButtons = document.querySelectorAll(
+    "[data-type=operation-unary]"
+);
+unaryOperationButtons.forEach((button) =>
+    button.addEventListener("click", () => {
+        calculator.handleUnaryOperations(button);
         calculator.updateDisplay();
     })
 );

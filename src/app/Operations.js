@@ -18,10 +18,10 @@ export class Operations extends Command {
         return parseFloat(Math.pow(firstOperand, 1 / secondOperand).toFixed(5));
     }
     addition(firstOperand, secondOperand) {
-        return firstOperand + secondOperand;
+        return parseFloat(firstOperand + secondOperand).toFixed(5);
     }
     substraction(firstOperand, secondOperand) {
-        return firstOperand - secondOperand;
+        return parseFloat(firstOperand - secondOperand).toFixed(5);
     }
 
     // Унарные операции
