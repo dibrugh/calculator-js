@@ -1,9 +1,12 @@
 Documentation:
 
 # Project -  Simple Calculator🖩 
-## [Task](./Test-task.pdf) - Create Simple Calculator using pure JavaScript. 
+## [Task](https://drive.google.com/file/d/15jVnBPXaZrjs99KOUxp4TGq6Inau6xq_/view) - Create Custom Calculator using pure JavaScript. 
 ## Functional requirements:
-- [x] Implement division, multiplication, subtraction, addition, percentage, sign change
+- [x] Implement basic math functions
+- [x] Implement MC, M+, M-, MR functions
+- [x] Apply Command pattern
+- [x] Prepare unit tests using Jest
 - [x] Project must be done using only pure JS (usage of libraries/frameworks is forbidden)
 - [x] Eval, Mathjs are forbidden
 - [x] Project should have configures ESLint and Prettier
@@ -11,7 +14,7 @@ Documentation:
 
 ## Links:
 ### [Design draft link](https://www.figma.com/community/file/1114581199758334463/calculator)
-### [Project (deployed)](https://dibrugh.github.io/calculator-js/)
+### [Project (will be deployed)](https://dibrugh.github.io/calculator-js/)
 ### [Repository](https://github.com/dibrugh/calculator-js)
 
 # Available Scripts and Commands
@@ -26,6 +29,8 @@ Documentation:
 >```npm run build-dev```  # builds the app for production\
 >```npm run build-prod```  # storybook build\
 >```npm run build-gh-pages```  # deploy on Github Pages
+## Test
+>```npm run test``` # run tests using Jest
 
 ## Folder structure
 + PROJECT
@@ -36,7 +41,9 @@ Documentation:
     + /app (js files related to the View and Logic of the project)
     + /assets (images, fonts, etc.)
         + /img (svg, gif, png, ico, jpg, etc.)
+    + /constants (data for rendering calculator)
     + /style (files related to project styling, like .css, .sass, etc.)
+    + /tests (test cases)
     + /utils (js utils or helpers that are not specific to this particular project)
     + index.html
     + index.js
