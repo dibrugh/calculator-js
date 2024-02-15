@@ -25,7 +25,7 @@ class View {
         buttons.map((button) => {
             keyboard.insertAdjacentHTML(
                 "beforeend",
-                `<button data-type=${button.attribute[0]} ${button.attribute[1] ? `data-function=${button.attribute[1]}` : ""} ${button.class ? `class=${button.class}` : ""}>${button.value}</button>`
+                `<button ${button.disabled ? "disabled" : ""} data-type=${button.attribute[0]} ${button.attribute[1] ? `data-function=${button.attribute[1]}` : ""} ${button.class ? `class=${button.class}` : ""}>${button.value}</button>`
             );
         });
 
