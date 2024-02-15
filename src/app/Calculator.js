@@ -67,6 +67,14 @@ class Calculator {
     }
 
     handleBinaryOperations(operationName) {
+        console.log(
+            "Предыдущий операнд - ",
+            this.firstOperand,
+            "Текущий операнд -",
+            this.displayValue,
+            "Операция в памяти -",
+            this.operationName
+        );
         const inputValue = parseFloat(this.displayValue);
 
         // Если нет операндов, ничего не делаем
@@ -94,6 +102,14 @@ class Calculator {
     }
 
     handleUnaryOperations(operationName) {
+        console.log(
+            "Предыдущий операнд - ",
+            this.firstOperand,
+            "Текущий операнд -",
+            this.displayValue,
+            "Операция в памяти -",
+            this.operationName
+        );
         // Если нет операндов, ничего не делаем
         if (this.displayValue === "") return;
 

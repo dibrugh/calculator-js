@@ -96,7 +96,6 @@ main {
 }
 
 .calculator {
-    width: 60%;
     position: relative;
     background: var(--calc-bg);
     border-radius: 4rem;
