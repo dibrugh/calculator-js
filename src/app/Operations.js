@@ -1,23 +1,39 @@
-import { Command } from "./Command";
+import Command from "./Command";
 
-export class Operations extends Command {
+export default class Operations extends Command {
     constructor() {
         super();
     }
     // Бинарные операции
     divide(firstOperand, secondOperand) {
+        console.log(
+            "первый",
+            firstOperand,
+            "второй",
+            secondOperand,
+            "результат",
+            firstOperand / secondOperand
+        );
         if (secondOperand === 0) {
             throw new Error("Error: divide by 0");
         }
         return parseFloat((firstOperand / secondOperand).toFixed(5));
     }
     xToThePowerOfY(firstOperand, secondOperand) {
+        /*         if (secondOperand < 0) {
+            return parseFloat(
+                (1 / firstOperand ** (secondOperand * -1)).toFixed(5)
+            );
+        } else { */
         return parseFloat((firstOperand ** secondOperand).toFixed(5));
     }
     multiply(firstOperand, secondOperand) {
         return parseFloat((firstOperand * secondOperand).toFixed(5));
     }
     yRootOfX(firstOperand, secondOperand) {
+        if (firstOperand < 0 || secondOperand < 0) {
+            throw new Error("Error: wrong params");
+        }
         return parseFloat(Math.pow(firstOperand, 1 / secondOperand).toFixed(5));
     }
     addition(firstOperand, secondOperand) {
@@ -50,13 +66,19 @@ export class Operations extends Command {
         return parseFloat((1 / firstOperand).toFixed(5));
     }
     squareRoot(firstOperand) {
+        if (firstOperand === 0) {
+            throw new Error("Error: wrong params");
+        }
         return parseFloat(Math.sqrt(firstOperand).toFixed(5));
     }
     cubeRoot(firstOperand) {
         return parseFloat(Math.cbrt(firstOperand).toFixed(5));
     }
     factorial(firstOperand) {
-        return firstOperand != 1
+        if (firstOperand < 0) {
+            throw new Error("Error: wrong params");
+        }
+        return firstOperand
             ? firstOperand * this.factorial(firstOperand - 1)
             : 1;
     }
@@ -72,7 +94,7 @@ export class Operations extends Command {
                 );
             }
         } catch (error) {
-            return "Error: divide by 0";
+            return error.message;
         }
     }
 }

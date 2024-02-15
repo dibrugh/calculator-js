@@ -1,4 +1,4 @@
-export class MemoryOperations {
+export default class MemoryOperations {
     constructor() {
         this.memoryState = null;
     }

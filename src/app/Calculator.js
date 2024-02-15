@@ -1,5 +1,5 @@
-import { MemoryOperations } from "./MemoryOperations";
-import { Operations } from "./Operations";
+import MemoryOperations from "./MemoryOperations";
+import Operations from "./Operations";
 import { result } from "./View";
 
 const operationsHandler = new Operations();
@@ -87,7 +87,7 @@ class Calculator {
                 this.firstOperand,
                 inputValue
             );
-            this.displayValue = `${String(this.result).length < 18 ? this.result : "Error: wrong length"}`;
+            this.displayValue = `${String(this.result).length < 21 ? this.result : "Error: wrong length"}`;
             this.firstOperand = this.result;
         }
         this.waitingForSecondOperand = true;
@@ -102,18 +102,17 @@ class Calculator {
 
         if (operationName) {
             this.result = operationsHandler.execute(operationName, inputValue);
-            console.log("Почему тут превышена длина ", this.result);
-            this.displayValue = `${String(this.result).length < 18 ? this.result : "Error: wrong length"}`;
-            this.firstOperand = this.result;
+            this.displayValue = `${String(this.result).length < 21 ? this.result : "Error: wrong length"}`;
+            /* this.firstOperand = this.result; */
         }
-        this.waitingForSecondOperand = true;
+        /* this.waitingForSecondOperand = true; */
     }
 
     updateDisplay() {
-        if (result.innerText.length < 18) {
+        if (String(result.innerText.length) < 21) {
             result.innerText = this.displayValue;
         } else {
-            result.textContent = "Error: num length";
+            result.textContent = "Error: wrong length";
             this.displayValue = "0";
         }
     }
