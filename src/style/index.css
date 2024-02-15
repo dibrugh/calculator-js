@@ -27,14 +27,23 @@
     --box-shadow-dark: 8px 9px 19px 4px rgba(0, 0, 0, 0.75);
 }
 
-* {
-    margin: 0;
-    padding: 0;
+html {
     box-sizing: border-box;
+    font-size: 10px;
 }
 
-html {
-    font-size: 10px;
+*,
+*::after,
+*::before {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
 }
 
 /* dark theme */
@@ -75,7 +84,7 @@ body[data-theme="light"] .calculator__theme-toggler {
 }
 
 main {
-    height: 100vh;
+    min-height: 100%;
     padding: 1rem;
     background: var(--bg);
     font-family: var(--font-family);
@@ -87,9 +96,8 @@ main {
 }
 
 .calculator {
+    width: 60%;
     position: relative;
-    /*     width: 40rem;
-    height: 65rem; */
     background: var(--calc-bg);
     border-radius: 4rem;
     box-shadow: var(--box-shadow-dark);
@@ -139,8 +147,8 @@ main {
 button {
     font-size: var(--font-size-s);
     border-radius: 50%;
-    width: 8rem;
-    height: 8rem;
+    width: 100%;
+    height: 9vh;
     outline: none;
     border: none;
     color: inherit;
