@@ -68,7 +68,6 @@ class Calculator {
 
     handleBinaryOperations(operationName) {
         const inputValue = parseFloat(this.displayValue);
-        /* const operationName = eventTarget.dataset.function; */
 
         // Если нет операндов, ничего не делаем
         if (this.displayValue === "") return;
@@ -81,7 +80,7 @@ class Calculator {
 
         if (this.firstOperand === null && !isNaN(inputValue)) {
             this.firstOperand = inputValue;
-        } else if (operationName) {
+        } else if (operationName && this.firstOperand && this.displayValue) {
             this.result = operationsHandler.execute(
                 this.operationName,
                 this.firstOperand,
@@ -100,12 +99,12 @@ class Calculator {
 
         const inputValue = parseFloat(this.displayValue);
 
-        if (this.firstOperand === null && !isNaN(inputValue)) {
+        if (!isNaN(inputValue)) {
             this.result = operationsHandler.execute(operationName, inputValue);
             this.displayValue = `${String(this.result).length < 21 ? this.result : "Error: wrong length"}`;
             /* this.firstOperand = this.result; */
         }
-        /*  this.waitingForSecondOperand = true; */
+        /* this.waitingForSecondOperand = true; */
     }
 
     updateDisplay() {
@@ -175,7 +174,6 @@ document
 
 // Обрабатываем только нажатия на кнопки
 keyboard.addEventListener("click", (event) => {
-    // Handle only clicks on a button tag
     if (!event.target.matches("button")) {
         return;
     }
