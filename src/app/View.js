@@ -1,8 +1,5 @@
 import { toggleTheme } from "../utils/setTheme";
 import { buttonsList as buttons } from "../constants/buttonsList";
-/* 
-CALCULATOR VIEW
-*/
 
 class View {
     renderView() {
@@ -18,13 +15,13 @@ class View {
         keyboard.classList.add("calculator__keyboard");
         calculatorView.appendChild(keyboard);
 
-        // Theme toggle
+        // Переключатель темы
         const themeToggler = document.createElement("div");
         themeToggler.classList.add("calculator__theme-toggler");
         calculatorView.appendChild(themeToggler);
         themeToggler.addEventListener("click", toggleTheme);
 
-        // Create buttons
+        // Отрисовка кнопок
         buttons.map((button) => {
             keyboard.insertAdjacentHTML(
                 "beforeend",

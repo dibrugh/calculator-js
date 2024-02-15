@@ -1,6 +1,6 @@
 import MemoryOperations from "./MemoryOperations";
 import Operations from "./Operations";
-import { result } from "./View";
+import { result, keyboard } from "./View";
 
 const operationsHandler = new Operations();
 const memoryOperationsHandler = new MemoryOperations();
@@ -100,12 +100,12 @@ class Calculator {
 
         const inputValue = parseFloat(this.displayValue);
 
-        if (operationName) {
+        if (this.firstOperand === null && !isNaN(inputValue)) {
             this.result = operationsHandler.execute(operationName, inputValue);
             this.displayValue = `${String(this.result).length < 21 ? this.result : "Error: wrong length"}`;
             /* this.firstOperand = this.result; */
         }
-        /* this.waitingForSecondOperand = true; */
+        /*  this.waitingForSecondOperand = true; */
     }
 
     updateDisplay() {
@@ -141,7 +141,6 @@ const binaryOperationButtons = document.querySelectorAll(
 );
 binaryOperationButtons.forEach((button) =>
     button.addEventListener("click", (event) => {
-        console.log(event);
         calculator.handleBinaryOperations(event.target.dataset.function);
         calculator.updateDisplay();
     })
@@ -174,25 +173,47 @@ document
         calculator.updateDisplay();
     });
 
-//! Написать отдельную функцию для обработки эвентов с клавиатуры
-/* // Обрабатываем нажатия с клавиатуры
+// Обрабатываем только нажатия на кнопки
 keyboard.addEventListener("click", (event) => {
     // Handle only clicks on a button tag
     if (!event.target.matches("button")) {
         return;
     }
 });
+
+// Обрабатываем нажатия на цифры и некоторые операции с клавиатуры
 document.addEventListener("keydown", (event) => {
-    if (event.key.match(/[0-9.,]/)) {
-        calculator.appendNumber(event.key);
-        calculator.updateDisplay();
-    } else if (event.key.match(/[/*-+]/)) {
-        console.log(event);
+    // Проверка, что строка будет начинаться с цифры или .,
+    if (event.key.match(/^[0-9.,]*$/)) {
         calculator.appendNumber(event.key);
         calculator.updateDisplay();
     }
-}); */
-
-/*     } else if (event.key.match(/[0-9%/*\-+=.]|Backspace|Enter/)) {
-        calculator.handleEvent(event.key);
-    } */
+    switch (event.key) {
+        case "/":
+            calculator.handleBinaryOperations("divide");
+            calculator.updateDisplay();
+            break;
+        case "*":
+            calculator.handleBinaryOperations("multiply");
+            calculator.updateDisplay();
+            break;
+        case "+":
+            calculator.handleBinaryOperations("addition");
+            calculator.updateDisplay();
+            break;
+        case "-":
+            calculator.handleBinaryOperations("substraction");
+            calculator.updateDisplay();
+            break;
+        case "%":
+            calculator.handleUnaryOperations("getPercent");
+            calculator.updateDisplay();
+            break;
+        case "Enter":
+            calculator.handleBinaryOperations("equal");
+            calculator.updateDisplay();
+            break;
+        default:
+            break;
+    }
+});

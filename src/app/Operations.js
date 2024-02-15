@@ -6,25 +6,12 @@ export default class Operations extends Command {
     }
     // Бинарные операции
     divide(firstOperand, secondOperand) {
-        console.log(
-            "первый",
-            firstOperand,
-            "второй",
-            secondOperand,
-            "результат",
-            firstOperand / secondOperand
-        );
         if (secondOperand === 0) {
             throw new Error("Error: divide by 0");
         }
         return parseFloat((firstOperand / secondOperand).toFixed(5));
     }
     xToThePowerOfY(firstOperand, secondOperand) {
-        /*         if (secondOperand < 0) {
-            return parseFloat(
-                (1 / firstOperand ** (secondOperand * -1)).toFixed(5)
-            );
-        } else { */
         return parseFloat((firstOperand ** secondOperand).toFixed(5));
     }
     multiply(firstOperand, secondOperand) {
