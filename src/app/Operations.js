@@ -7,7 +7,7 @@ export class Operations extends Command {
     // Бинарные операции
     divide(firstOperand, secondOperand) {
         if (secondOperand === 0) {
-            throw new Error("Ошибка");
+            throw new Error("Error: divide by 0");
         }
         return parseFloat((firstOperand / secondOperand).toFixed(5));
     }
@@ -18,9 +18,6 @@ export class Operations extends Command {
         return parseFloat((firstOperand * secondOperand).toFixed(5));
     }
     yRootOfX(firstOperand, secondOperand) {
-        if (secondOperand === 0) {
-            throw new Error("Ошибка");
-        }
         return parseFloat(Math.pow(firstOperand, 1 / secondOperand).toFixed(5));
     }
     addition(firstOperand, secondOperand) {
@@ -35,25 +32,28 @@ export class Operations extends Command {
         return firstOperand * -1;
     }
     getPercent(firstOperand) {
-        return firstOperand * 0.01;
+        return parseFloat((firstOperand * 0.01).toFixed(5));
     }
     square(firstOperand) {
-        return firstOperand ** 2;
+        return parseFloat((firstOperand ** 2).toFixed(5));
     }
     qube(firstOperand) {
-        return firstOperand ** 3;
+        return parseFloat((firstOperand ** 3).toFixed(5));
     }
     tenToThePowerOfX(firstOperand) {
-        return 10 ** firstOperand;
+        return parseFloat((10 ** firstOperand).toFixed(5));
     }
     oneDivideByX(firstOperand) {
-        return 1 / firstOperand;
+        if (firstOperand === 0) {
+            throw new Error("Error: divide by 0");
+        }
+        return parseFloat((1 / firstOperand).toFixed(5));
     }
     squareRoot(firstOperand) {
-        return Math.sqrt(firstOperand);
+        return parseFloat(Math.sqrt(firstOperand).toFixed(5));
     }
     cubeRoot(firstOperand) {
-        return Math.cbrt(firstOperand);
+        return parseFloat(Math.cbrt(firstOperand).toFixed(5));
     }
     factorial(firstOperand) {
         return firstOperand != 1
@@ -72,7 +72,7 @@ export class Operations extends Command {
                 );
             }
         } catch (error) {
-            return "Ошибка";
+            return "Error: divide by 0";
         }
     }
 }

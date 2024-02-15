@@ -1,8 +1,9 @@
 import { MemoryOperations } from "./MemoryOperations";
 import { Operations } from "./Operations";
 import { result } from "./View";
+
 const operationsHandler = new Operations();
-const memoryOperationsHandler = new MemoryOperations(0);
+const memoryOperationsHandler = new MemoryOperations();
 class Calculator {
     constructor() {
         this.displayValue = "0";
@@ -23,6 +24,7 @@ class Calculator {
             this.waitingForSecondOperand = false;
             return;
         }
+        // Избегаю дублирования точек
         if (number === "." && this.displayValue.includes(".")) {
             return;
         }
@@ -37,9 +39,8 @@ class Calculator {
         }
     }
 
-    handleMemoryOperations(operationButton) {
+    handleMemoryOperations(operationName) {
         const inputValue = parseFloat(this.displayValue);
-        const operationName = operationButton.attributes["data-function"].value;
         let memoryResult;
         // Если нет операндов, ничего не делаем
         if (this.displayValue === "") return;
@@ -65,10 +66,9 @@ class Calculator {
         }
     }
 
-    handleBinaryOperations(operationButton) {
+    handleBinaryOperations(operationName) {
         const inputValue = parseFloat(this.displayValue);
-        console.log("значение inputValue для бинарных операций", inputValue);
-        const operationName = operationButton.attributes["data-function"].value;
+        /* const operationName = eventTarget.dataset.function; */
 
         // Если нет операндов, ничего не делаем
         if (this.displayValue === "") return;
@@ -94,15 +94,15 @@ class Calculator {
         this.operationName = operationName;
     }
 
-    handleUnaryOperations(operationButton) {
+    handleUnaryOperations(operationName) {
         // Если нет операндов, ничего не делаем
         if (this.displayValue === "") return;
 
         const inputValue = parseFloat(this.displayValue);
-        const operationName = operationButton.attributes["data-function"].value;
 
         if (operationName) {
             this.result = operationsHandler.execute(operationName, inputValue);
+            console.log("Почему тут превышена длина ", this.result);
             this.displayValue = `${String(this.result).length < 18 ? this.result : "Error: wrong length"}`;
             this.firstOperand = this.result;
         }
@@ -110,7 +110,12 @@ class Calculator {
     }
 
     updateDisplay() {
-        result.innerText = this.displayValue;
+        if (result.innerText.length < 18) {
+            result.innerText = this.displayValue;
+        } else {
+            result.textContent = "Error: num length";
+            this.displayValue = "0";
+        }
     }
 
     allClear() {
@@ -136,8 +141,9 @@ const binaryOperationButtons = document.querySelectorAll(
     "[data-type=operation-binary]"
 );
 binaryOperationButtons.forEach((button) =>
-    button.addEventListener("click", () => {
-        calculator.handleBinaryOperations(button);
+    button.addEventListener("click", (event) => {
+        console.log(event);
+        calculator.handleBinaryOperations(event.target.dataset.function);
         calculator.updateDisplay();
     })
 );
@@ -146,8 +152,8 @@ const unaryOperationButtons = document.querySelectorAll(
     "[data-type=operation-unary]"
 );
 unaryOperationButtons.forEach((button) =>
-    button.addEventListener("click", () => {
-        calculator.handleUnaryOperations(button);
+    button.addEventListener("click", (event) => {
+        calculator.handleUnaryOperations(event.target.dataset.function);
         calculator.updateDisplay();
     })
 );
@@ -156,8 +162,8 @@ const memoryOperationButtons = document.querySelectorAll(
     "[data-type=operation-memory]"
 );
 memoryOperationButtons.forEach((button) =>
-    button.addEventListener("click", () => {
-        calculator.handleMemoryOperations(button);
+    button.addEventListener("click", (event) => {
+        calculator.handleMemoryOperations(event.target.dataset.function);
         calculator.updateDisplay();
     })
 );
@@ -169,16 +175,25 @@ document
         calculator.updateDisplay();
     });
 
-/* // Handle key press
+//! Написать отдельную функцию для обработки эвентов с клавиатуры
+/* // Обрабатываем нажатия с клавиатуры
 keyboard.addEventListener("click", (event) => {
     // Handle only clicks on a button tag
     if (!event.target.matches("button")) {
         return;
     }
-    calculator.handleEvent(event.target.innerText);
 });
 document.addEventListener("keydown", (event) => {
-    if (event.key.match(/[0-9%/*\-+=.]|Backspace|Enter/))
+    if (event.key.match(/[0-9.,]/)) {
+        calculator.appendNumber(event.key);
+        calculator.updateDisplay();
+    } else if (event.key.match(/[/*-+]/)) {
+        console.log(event);
+        calculator.appendNumber(event.key);
+        calculator.updateDisplay();
+    }
+}); */
+
+/*     } else if (event.key.match(/[0-9%/*\-+=.]|Backspace|Enter/)) {
         calculator.handleEvent(event.key);
-});
- */
+    } */

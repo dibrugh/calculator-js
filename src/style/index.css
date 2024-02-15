@@ -6,6 +6,7 @@
     --color-light-grey: #aeaeae;
     --color-dark-grey: #6d6d6d;
     --color-orange: #ffb800;
+    --color-operation-active: #dc8787;
     /* backgrounds */
     --color-bg-light: #4a4a4a;
     --color-bg-white: #ffffff;
@@ -162,6 +163,9 @@ button:focus {
     background-color: var(--color-number);
 }
 
+.active {
+    background-color: var(--color-operation-active);
+}
 .orange {
     background-color: var(--color-operation-orange);
 }
