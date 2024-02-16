@@ -11,7 +11,6 @@ class Calculator {
         this.waitingForSecondOperand = false;
         this.operationName = undefined;
         this.result = null;
-        this.memoryValue = null;
     }
 
     appendNumber(number) {
@@ -90,7 +89,7 @@ class Calculator {
                 this.firstOperand,
                 inputValue
             );
-            this.displayValue = `${String(this.result).length < 21 ? this.result : "Error: wrong length"}`;
+            this.displayValue = `${String(this.result).length < 20 ? this.result : "Error: wrong length"}`;
             this.firstOperand = this.result;
         }
         this.waitingForSecondOperand = true;
@@ -101,8 +100,7 @@ class Calculator {
         const inputValue = parseFloat(this.displayValue);
         if (!isNaN(inputValue)) {
             this.result = operationsHandler.execute(operationName, inputValue);
-            console.log("10 в 0", this.displayValue);
-            this.displayValue = `${String(this.result).length < 21 ? this.result : "Error: wrong length"}`;
+            this.displayValue = `${String(this.result).length < 20 ? this.result : "Error: wrong length"}`;
         }
         // Т.к результат записывается в первый операнд, а тут мы работаем со вторым, нужно обработать кейс,
         // где пользователь выполнит несколько унарных операций подряд в рамках бинарной операции
@@ -112,7 +110,7 @@ class Calculator {
     }
 
     updateDisplay() {
-        if (String(result.innerText.length) < 21) {
+        if (String(result.innerText.length) < 20) {
             result.innerText = this.displayValue;
         } else {
             result.textContent = "Error: wrong length";
@@ -169,6 +167,7 @@ memoryOperationButtons.forEach((button) =>
     })
 );
 
+// Очистка значения на экране и памяти
 document
     .querySelector("[data-function=allClear]")
     .addEventListener("click", () => {

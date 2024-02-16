@@ -29,22 +29,6 @@ class View {
             );
         });
 
-        // Change input/output styles depending on character length
-        /* document.querySelectorAll("button").forEach((button) => {
-            const handleClasses = () => {
-                if (
-                    result.innerText.length > 3 &&
-                    result.innerText.length < 6
-                ) {
-                    result.classList.add("calculator__output-medium");
-                } else if (result.innerText.length > 5) {
-                    result.classList.add("calculator__output-small");
-                }
-            };
-            button.addEventListener("click", handleClasses);
-            document.addEventListener("keydown", handleClasses);
-        }); */
-
         return {
             result,
             keyboard,
