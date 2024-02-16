@@ -10,7 +10,7 @@ class Calculator {
         this.firstOperand = null;
         this.waitingForSecondOperand = false;
         this.operationName = undefined;
-        this.result = "";
+        this.result = null;
         this.memoryValue = null;
     }
 
@@ -19,7 +19,11 @@ class Calculator {
         if (number === ",") {
             number = ".";
         }
-        if (number === "." && this.displayValue === "0") {
+        // Если нажимается . или , без нажатия цифр, вставляется 0.
+        if (
+            number === "." &&
+            (this.displayValue === "0" || this.waitingForSecondOperand)
+        ) {
             this.displayValue = "0.";
             this.waitingForSecondOperand = false;
             return;
@@ -42,8 +46,6 @@ class Calculator {
     handleMemoryOperations(operationName) {
         const inputValue = parseFloat(this.displayValue);
         let memoryResult;
-        // Если нет операндов, ничего не делаем
-        if (this.displayValue === "") return;
         switch (operationName) {
             case "memoryRestore":
                 memoryResult = memoryOperationsHandler.memoryRestore();
@@ -67,20 +69,9 @@ class Calculator {
     }
 
     handleBinaryOperations(operationName) {
-        console.log(
-            "Предыдущий операнд - ",
-            this.firstOperand,
-            "Текущий операнд -",
-            this.displayValue,
-            "Операция в памяти -",
-            this.operationName
-        );
         const inputValue = parseFloat(this.displayValue);
 
-        // Если нет операндов, ничего не делаем
-        if (this.displayValue === "") return;
-
-        // Если оператор =, не передаём в execute
+        // Если оператор = нажимает только на одном операнде, не передаём в execute
         if (operationName !== "equal" && this.waitingForSecondOperand) {
             this.operationName = operationName;
             return;
@@ -88,7 +79,12 @@ class Calculator {
 
         if (this.firstOperand === null && !isNaN(inputValue)) {
             this.firstOperand = inputValue;
-        } else if (operationName && this.firstOperand && this.displayValue) {
+        } else if (
+            operationName &&
+            this.firstOperand &&
+            this.displayValue &&
+            this.operationName !== "equal"
+        ) {
             this.result = operationsHandler.execute(
                 this.operationName,
                 this.firstOperand,
@@ -102,25 +98,17 @@ class Calculator {
     }
 
     handleUnaryOperations(operationName) {
-        console.log(
-            "Предыдущий операнд - ",
-            this.firstOperand,
-            "Текущий операнд -",
-            this.displayValue,
-            "Операция в памяти -",
-            this.operationName
-        );
-        // Если нет операндов, ничего не делаем
-        if (this.displayValue === "") return;
-
         const inputValue = parseFloat(this.displayValue);
-
         if (!isNaN(inputValue)) {
             this.result = operationsHandler.execute(operationName, inputValue);
+            console.log("10 в 0", this.displayValue);
             this.displayValue = `${String(this.result).length < 21 ? this.result : "Error: wrong length"}`;
-            /* this.firstOperand = this.result; */
         }
-        /* this.waitingForSecondOperand = true; */
+        // Т.к результат записывается в первый операнд, а тут мы работаем со вторым, нужно обработать кейс,
+        // где пользователь выполнит несколько унарных операций подряд в рамках бинарной операции
+        if (this.firstOperand && this.firstOperand !== this.displayValue) {
+            this.firstOperand = this.displayValue;
+        }
     }
 
     updateDisplay() {
