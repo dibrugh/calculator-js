@@ -63,7 +63,6 @@ class Calculator {
         }
         if (memoryResult) {
             this.displayValue = memoryResult;
-            this.firstOperand = this.displayValue;
         }
     }
 
